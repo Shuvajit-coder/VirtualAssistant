@@ -23,16 +23,7 @@ function UserContext({children}){
     }
 
 
-  //  const getGeminiResponse = async(command)=>{
-  //     try {
-  //       const result =  await axios.post(`${serverUrl}/api/user/asktoassistant`,{command},{withCredentials:true})
-  //       return result.data
-  //     } catch (error) {
-  //       console.log("ERROR:", error.response?.data || error.message)
-  //      return { reply: "Something went wrong" }
-        
-  //     }
-  //  }
+  
 
 
   const getGeminiResponse = async (command) => {
