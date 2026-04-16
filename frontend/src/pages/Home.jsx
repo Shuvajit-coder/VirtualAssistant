@@ -71,82 +71,12 @@ function Home() {
     synth.speak(utterance);
   }
 
-// const handleCommand = (data) => {
-//   let { type, userInput, response } = data;
 
-//   speak(response);
 
-//   console.log("TYPE:", type);
-//   console.log("USER INPUT:", userInput);
 
-//   const input = (userInput || "").toLowerCase();
-//   const query = encodeURIComponent(userInput || "");
 
-//   //  HANDLE ERROR TYPE ALSO (IMPORTANT FIX)
-//   if (type === "general" || type === "error") {
 
-//     if (input.includes("youtube") && input.includes("play")) {
-//       type = "youtube-play";
 
-//     } else if (input.includes("youtube")) {
-//       type = "youtube-search";
-
-//     } else if (input.includes("calculator")) {
-//       type = "calculator-open";
-
-//     } else if (input.includes("instagram")) {
-//       type = "instagram-open";
-
-//     } else if (input.includes("facebook")) {
-//       type = "facebook-open";
-
-//     } else if (input.includes("weather")) {
-//       type = "weather-show";
-
-//     } else if (input.includes("search") || input.includes("google")) {
-//       type = "google-search";
-//     }
-//   }
-
-//   // 🔥 FINAL EXECUTION
-//   switch (type) {
-
-//     case "general":
-//       console.log("General response only");
-//       break;
-
-//     case "google-search":
-//       window.open(`https://www.google.com/search?q=${query}`, "_blank");
-//       break;
-
-//     case "youtube-search":
-//       window.open(`https://www.youtube.com/results?search_query=${query}`, "_blank");
-//       break;
-
-//     case "youtube-play":
-//       window.open(`https://www.youtube.com/results?search_query=${query}&autoplay=1`, "_blank");
-//       break;
-
-//     case "calculator-open":
-//       window.open("https://www.google.com/search?q=calculator", "_blank");
-//       break;
-
-//     case "instagram-open":
-//       window.open("https://www.instagram.com", "_blank");
-//       break;
-
-//     case "facebook-open":
-//       window.open("https://www.facebook.com", "_blank");
-//       break;
-
-//     case "weather-show":
-//       window.open(`https://www.google.com/search?q=weather+${query}`, "_blank");
-//       break;
-
-//     default:
-//       console.log("Unknown command:", type);
-//   }
-// };
 
 const handleCommand = (data) => {
   let { type, userInput, response } = data;
