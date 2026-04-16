@@ -28,23 +28,23 @@ function UserContext({children}){
 
   const getGeminiResponse = async (command) => {
   try {
-    // 1️⃣ Assistant call
+    //  Assistant call
     const result = await axios.post(
       `${serverUrl}/api/user/asktoassistant`,
       { command },
       { withCredentials: true }
     );
 
-    // 2️⃣ 🔥 Fetch updated user (IMPORTANT)
+    //  Fetch updated user (IMPORTANT)
     const updatedUser = await axios.get(
       `${serverUrl}/api/user/current`,
       { withCredentials: true }
     );
 
-    // 3️⃣ Update global state
+    //  Update global state
     setUserData(updatedUser.data);
 
-    // 4️⃣ Return assistant response
+    //  Return assistant response
     return result.data;
 
   } catch (error) {
