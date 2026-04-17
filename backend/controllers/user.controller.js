@@ -168,7 +168,7 @@ export const askToAssistant = async (req, res) => {
       return res.json({
         type: "limit",
         userInput: command,
-        response: "API limit reached. Please try after some time."
+        response: "I'm a bit busy right now, please try again in a few seconds."
       });
     }
 

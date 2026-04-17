@@ -1,77 +1,76 @@
-import React, { createContext, useState } from 'react'
-import { useEffect } from 'react'
-export const userDataContext = createContext()
-import axios from "axios"
+import React, { createContext, useState } from "react";
+import { useEffect } from "react";
+export const userDataContext = createContext();
+import axios from "axios";
 
-function UserContext({children}){
-    const serverUrl="https://virtualassistant-backend-32yv.onrender.com"
-    const [userData, setUserData] = useState(null)
-    const[frontendImage, setFrontendImage] = useState(null)
-    const[backendImage, setBackendImage] = useState(null)
-    const [selectedImage, setSelectedImage] =useState(null)
-    const haandleCurrentUser= async()=>{
-      try {
-        const result = await axios.get(`${serverUrl}/api/user/current`,{withCredentials: true})
+function UserContext({ children }) {
+  const serverUrl = "http://localhost:8000";
+  const [userData, setUserData] = useState(null);
+  const [frontendImage, setFrontendImage] = useState(null);
+  const [backendImage, setBackendImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const haandleCurrentUser = async () => {
+    try {
+      const result = await axios.get(`${serverUrl}/api/user/current`, {
+        withCredentials: true,
+      });
 
-        setUserData(result.data)
-        console.log(result.data);
-        
-      } catch (error) {
-        console.log(error);
-        
-      }
+      setUserData(result.data);
+      console.log(result.data);
+    } catch (error) {
+      console.log(error);
     }
-
-
-  
-
+  };
 
   const getGeminiResponse = async (command) => {
-  try {
-    // 1️ Assistant call
-    const result = await axios.post(
-      `${serverUrl}/api/user/asktoassistant`,
-      { command },
-      { withCredentials: true }
-    );
+    try {
+      // 1️ Assistant call
+      const result = await axios.post(
+        `${serverUrl}/api/user/asktoassistant`,
+        { command },
+        { withCredentials: true },
+      );
 
-    //  Fetch updated user (IMPORTANT)
-    const updatedUser = await axios.get(
-      `${serverUrl}/api/user/current`,
-      { withCredentials: true }
-    );
+      //  Fetch updated user (IMPORTANT)
+      const updatedUser = await axios.get(`${serverUrl}/api/user/current`, {
+        withCredentials: true,
+      });
 
-    //  Update global state
-    //  Update global state
-    setUserData(updatedUser.data);
+      //  Update global state
+      //  Update global state
+      setUserData(updatedUser.data);
 
-    // Return assistant response
-    return result.data;
-
-  } catch (error) {
-    console.log("ERROR:", error.response?.data || error.message);
-    return { reply: "Something went wrong" };
-  }
-};
-
-
-    useEffect(() =>{
-      haandleCurrentUser()
-    },[])
-
-    const value={
-      serverUrl,
-      userData,
-      setUserData,backendImage, setBackendImage,frontendImage, setFrontendImage,
-      selectedImage, setSelectedImage, getGeminiResponse
+      // Return assistant response
+      return result.data;
+    } catch (error) {
+      console.log("ERROR:", error.response?.data || error.message);
+      return { reply: "Something went wrong" };
     }
+  };
+
+  useEffect(() => {
+    haandleCurrentUser();
+  }, []);
+
+  const value = {
+    serverUrl,
+    userData,
+    setUserData,
+    backendImage,
+    setBackendImage,
+    frontendImage,
+    setFrontendImage,
+    selectedImage,
+    setSelectedImage,
+    getGeminiResponse,
+  };
   return (
     <div>
       <userDataContext.Provider value={value}>
-      {children}
+        {children}
       </userDataContext.Provider>
     </div>
-  )
+  );
 }
 
-export default UserContext
+export default UserContext;

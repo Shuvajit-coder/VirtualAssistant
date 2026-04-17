@@ -213,7 +213,7 @@ User Input: "${command}"
       return {
         type: "limit",
         userInput: command,
-        response: "API limit reached. Please try later."
+        response: "I'm a bit busy right now, please try again in a few seconds."
       };
     }
 
