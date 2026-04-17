@@ -4,7 +4,7 @@ export const userDataContext = createContext()
 import axios from "axios"
 
 function UserContext({children}){
-    const serverUrl="http://localhost:8000"
+    const serverUrl="https://virtualassistant-backend-32yv.onrender.com"
     const [userData, setUserData] = useState(null)
     const[frontendImage, setFrontendImage] = useState(null)
     const[backendImage, setBackendImage] = useState(null)
@@ -23,16 +23,7 @@ function UserContext({children}){
     }
 
 
-  //  const getGeminiResponse = async(command)=>{
-  //     try {
-  //       const result =  await axios.post(`${serverUrl}/api/user/asktoassistant`,{command},{withCredentials:true})
-  //       return result.data
-  //     } catch (error) {
-  //       console.log("ERROR:", error.response?.data || error.message)
-  //      return { reply: "Something went wrong" }
-        
-  //     }
-  //  }
+  
 
 
   const getGeminiResponse = async (command) => {
@@ -44,12 +35,13 @@ function UserContext({children}){
       { withCredentials: true }
     );
 
-    // 2️ Fetch updated user (IMPORTANT)
+    //  Fetch updated user (IMPORTANT)
     const updatedUser = await axios.get(
       `${serverUrl}/api/user/current`,
       { withCredentials: true }
     );
 
+    //  Update global state
     //  Update global state
     setUserData(updatedUser.data);
 
