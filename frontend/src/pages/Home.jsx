@@ -278,7 +278,7 @@ const handleCommand = (data) => {
   isRecognizingRef.current = false;
   setListening(false);
 
-  // 🔥 STOP restart if manually stopped
+  //  STOP restart if manually stopped
   if (manuallyStoppedRef.current) {
     manuallyStoppedRef.current = false;
     return;
@@ -301,7 +301,6 @@ const handleCommand = (data) => {
   console.warn("Recognition error:", event.error);
 
   if (event.error === "aborted") {
-    // 🔥 DO NOTHING (this is expected when you stop manually)
     return;
   }
 
