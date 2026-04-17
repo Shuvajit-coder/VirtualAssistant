@@ -19,6 +19,7 @@ function Home() {
   const isRecognizingRef = useRef(false)
   const[ham, setHam] = useState(false)
   const synth = window.speechSynthesis
+  const manuallyStoppedRef = useRef(false);
 
 
   const handleLogOut = async()=>{
@@ -71,82 +72,7 @@ function Home() {
     synth.speak(utterance);
   }
 
-// const handleCommand = (data) => {
-//   let { type, userInput, response } = data;
 
-//   speak(response);
-
-//   console.log("TYPE:", type);
-//   console.log("USER INPUT:", userInput);
-
-//   const input = (userInput || "").toLowerCase();
-//   const query = encodeURIComponent(userInput || "");
-
-//   //  HANDLE ERROR TYPE ALSO (IMPORTANT FIX)
-//   if (type === "general" || type === "error") {
-
-//     if (input.includes("youtube") && input.includes("play")) {
-//       type = "youtube-play";
-
-//     } else if (input.includes("youtube")) {
-//       type = "youtube-search";
-
-//     } else if (input.includes("calculator")) {
-//       type = "calculator-open";
-
-//     } else if (input.includes("instagram")) {
-//       type = "instagram-open";
-
-//     } else if (input.includes("facebook")) {
-//       type = "facebook-open";
-
-//     } else if (input.includes("weather")) {
-//       type = "weather-show";
-
-//     } else if (input.includes("search") || input.includes("google")) {
-//       type = "google-search";
-//     }
-//   }
-
-//   // 🔥 FINAL EXECUTION
-//   switch (type) {
-
-//     case "general":
-//       console.log("General response only");
-//       break;
-
-//     case "google-search":
-//       window.open(`https://www.google.com/search?q=${query}`, "_blank");
-//       break;
-
-//     case "youtube-search":
-//       window.open(`https://www.youtube.com/results?search_query=${query}`, "_blank");
-//       break;
-
-//     case "youtube-play":
-//       window.open(`https://www.youtube.com/results?search_query=${query}&autoplay=1`, "_blank");
-//       break;
-
-//     case "calculator-open":
-//       window.open("https://www.google.com/search?q=calculator", "_blank");
-//       break;
-
-//     case "instagram-open":
-//       window.open("https://www.instagram.com", "_blank");
-//       break;
-
-//     case "facebook-open":
-//       window.open("https://www.facebook.com", "_blank");
-//       break;
-
-//     case "weather-show":
-//       window.open(`https://www.google.com/search?q=weather+${query}`, "_blank");
-//       break;
-
-//     default:
-//       console.log("Unknown command:", type);
-//   }
-// };
 
 const handleCommand = (data) => {
   let { type, userInput, response } = data;
@@ -304,46 +230,96 @@ const handleCommand = (data) => {
       setListening(true)
     };
 
-    recognition.onend =()=>{
-      //console.log("Rcognition ended");
-      isRecognizingRef.current = false;
-      setListening(false);
+    // recognition.onend =()=>{
+    //   //console.log("Rcognition ended");
+    //   isRecognizingRef.current = false;
+    //   setListening(false);
 
-      if(isMounted && !isSpeakingRef.current){
-        setTimeout(() => {
-          if(isMounted){
-            try {
-              recognition.start();
-              console.log("recognition restarted");
-            } catch (error) {
-              if(error.name !== "InvalidStateError"){
-                console.error( error)
-            }
-            }
-          }
-        }, 1000);
-      }
-    }
-    recognition.onerror = (event) =>{
-      console.warn("Recognition error:", event.error);
-      isRecognizingRef.current = false;
-      setListening(false);
-      if(event.error !== "aborted" && !isSpeakingRef.current){
-        setTimeout(() => {
-          if(isMounted){
-            try {
-              recognition.start();
-              console.log("recognition restarted after error");
+    //   if(isMounted && !isSpeakingRef.current){
+    //     setTimeout(() => {
+    //       if(isMounted){
+    //         try {
+    //           recognition.start();
+    //           console.log("recognition restarted");
+    //         } catch (error) {
+    //           if(error.name !== "InvalidStateError"){
+    //             console.error( error)
+    //         }
+    //         }
+    //       }
+    //     }, 1000);
+    //   }
+    // }
+
+
+    // recognition.onerror = (event) =>{
+    //   console.warn("Recognition error:", event.error);
+    //   isRecognizingRef.current = false;
+    //   setListening(false);
+    //   if(event.error !== "aborted" && !isSpeakingRef.current){
+    //     setTimeout(() => {
+    //       if(isMounted){
+    //         try {
+    //           recognition.start();
+    //           console.log("recognition restarted after error");
               
-            } catch (error) {
-              if(error.name !== "InvalidStateError"){
-             console.error("Start error", error)
-             }
-            }
-          }
-        },1000);
+    //         } catch (error) {
+    //           if(error.name !== "InvalidStateError"){
+    //          console.error("Start error", error)
+    //          }
+    //         }
+    //       }
+    //     },1000);
+    //   }
+    // }
+
+
+   recognition.onend = () => {
+  isRecognizingRef.current = false;
+  setListening(false);
+
+  // 🔥 STOP restart if manually stopped
+  if (manuallyStoppedRef.current) {
+    manuallyStoppedRef.current = false;
+    return;
+  }
+
+  if (!isSpeakingRef.current) {
+    setTimeout(() => {
+      try {
+        recognition.start();
+      } catch (error) {
+        if (error.name !== "InvalidStateError") {
+          console.error(error);
+        }
       }
-    }
+    }, 1000);
+  }
+};
+
+   recognition.onerror = (event) => {
+  console.warn("Recognition error:", event.error);
+
+  if (event.error === "aborted") {
+    // 🔥 DO NOTHING (this is expected when you stop manually)
+    return;
+  }
+
+  isRecognizingRef.current = false;
+  setListening(false);
+
+  if (!isSpeakingRef.current) {
+    setTimeout(() => {
+      try {
+        recognition.start();
+      } catch (error) {
+        if (error.name !== "InvalidStateError") {
+          console.error("Restart error:", error);
+        }
+      }
+    }, 1000);
+  }
+};
 
     recognition.onresult= async (e)=>{
      const transcript = e.results[e.results.length-1][0].transcript.trim()
@@ -352,10 +328,10 @@ const handleCommand = (data) => {
      if(transcript.toLowerCase().includes(userData.assistantName.toLowerCase())){
       setAiText("")
       setUserText(transcript)
-
-      setTimeout(() => {
+      manuallyStoppedRef.current = true;
+      
       recognition.stop();
-      }, 50);
+     
       isRecognizingRef.current=false
       setListening(false)
      const data= await getGeminiResponse(transcript)
