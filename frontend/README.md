@@ -1,16 +1,57 @@
-# React + Vite
+# Virtual Assistant - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend for the Virtual Assistant application, built with React, Vite, and Tailwind CSS. It interacts with a backend API to process voice commands and text input to provide a smart virtual assistant experience.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React** (v19) - UI Library
+- **Vite** - Build Tool & Dev Server
+- **Tailwind CSS** - Styling
+- **React Router DOM** - Navigation
+- **Axios** - HTTP client for API requests
+- **React Icons** - Icon library
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Voice command recognition and processing
+- Interactive UI to chat with the virtual assistant
+- Seamless integration with the backend API
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- npm or yarn
+
+### Installation
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+
+To start the development server, run:
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`.
+
+### Build for Production
+
+To build the project for production:
+```bash
+npm run build
+```
+
+To preview the production build:
+```bash
+npm run preview
+```
