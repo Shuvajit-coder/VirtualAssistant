@@ -1,7 +1,7 @@
 import User from "../models/user.model.js"
 import uploadOnCloudinary from "../config/cloudinary.js"
 import geminiResponse from "../gemini.js"
-import moment from "moment/moment.js"
+import moment from "moment-timezone"
 
 
 export const getCurrentUser = async(req, res)=>{
@@ -84,7 +84,7 @@ export const askToAssistant = async (req, res) => {
     const lowerCommand = command.toLowerCase();
 
     //  USE MOMENT 
-    const now = moment();
+    const now = moment().tz("Asia/Kolkata");
 
     // =========================
     // LOCAL COMMANDS (FAST, NO GEMINI)
